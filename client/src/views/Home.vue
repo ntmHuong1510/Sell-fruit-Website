@@ -1,0 +1,170 @@
+<template>
+  <div class="home">
+    <Carosel />
+    <Feature />
+    <div class="top-title">
+      <div class="sub_title">
+        Cras ornare tristique elit.
+      </div>
+      <h4 class="title_block title_font">
+        <span class="title_text">Featured Products</span>
+      </h4>
+      <div class="icon_title">
+        <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
+      </div>
+    </div>
+    <div class="product-list">
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+    </div>
+    <AboutUs />
+    <div class="best-seller-product">
+      <div class="best-seller">
+        <p class="title">BEST SELLERS</p>
+        <div class="list">
+          <SmallProduct />
+          <SmallProduct />
+          <SmallProduct />
+        </div>
+      </div>
+      <div class="image-content">
+        <img src="https://demo.fieldthemes.com/ps-fami/store/modules/ftchtmlblock/images/img5.jpg">
+      </div>
+      <div class="best-seller">
+        <p class="title">TOP RATES</p>
+        <div class="list">
+          <SmallProduct />
+          <SmallProduct />
+          <SmallProduct />
+        </div>
+      </div>
+    </div>
+    <MoreInfo />
+  </div>
+</template>
+
+<script setup>
+
+import Carosel from "@/components/Carosel.vue";
+import Feature from "@/components/Feature.vue";
+import Product from "@/components/Product.vue";
+import SmallProduct from "@/components/SmallProduct.vue";
+import MoreInfo from "@/components/MoreInfo.vue";
+import AboutUs from "@/components/AboutUs.vue";
+import Brand from "@/components/Brand.vue";
+import Footer from "@/components/Footer.vue";
+
+
+</script>
+  
+<style scoped lang="scss">
+.home {
+  height: auto;
+}
+
+.top-title {
+  margin-top: 50px;
+  text-align: center;
+  display: block;
+
+  .sub_title {
+    font-size: 16px;
+    font-style: italic;
+    color: #666;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .title_block {
+    font-size: 30px;
+    color: #333;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0;
+
+    &:hover {
+      color: #addc3b;
+    }
+  }
+
+  .icon_title {
+    font-size: 30px;
+    color: #addc3b;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+    min-width: 150px;
+
+    &::before {
+      content: "";
+      width: 53px;
+      height: 2px;
+      top: 50%;
+      left: 0;
+      background: #addc3b;
+      background-color: rgb(173, 220, 59);
+      position: absolute;
+    }
+
+    &::after {
+      content: "";
+      width: 53px;
+      height: 2px;
+      top: 50%;
+      right: 0;
+      background: #addc3b;
+      background-color: rgb(173, 220, 59);
+      position: absolute;
+    }
+  }
+}
+
+.product-list {
+  margin: auto;
+  max-width: 1150px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.best-seller-product {
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+  .image-content{
+    margin: 0 20px;
+  }
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 18px;
+    padding-bottom: 47px;
+    margin: 0;
+    overflow: hidden;
+    display: block;
+    position: relative;
+
+    &::after {
+      content: "";
+      width: 53px;
+      height: 2px;
+      top: 38px;
+      left: 0;
+      background: #addc3b;
+      background-color: rgb(173, 220, 59);
+      position: absolute;
+    }
+  }
+}
+</style>
+  
