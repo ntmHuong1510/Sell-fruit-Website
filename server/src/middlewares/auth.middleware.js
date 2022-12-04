@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
+const { extractToken } = require("../utils/common.util");
 const jwtSecret = process.env.JWT_SERECT;
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = extractToken(req);
 
   if (token) {
     jwt.verify(token, jwtSecret, (err) => {

@@ -14,8 +14,8 @@ async function authUser(req, res, next) {
           commonUtils.formatResponse(
             "Missing param username or password!",
             404,
-            null
-          )
+            null,
+          ),
         );
     } else if (userInfo?.length > 0) {
       const maxAge = 3 * 60 * 60;
@@ -28,16 +28,14 @@ async function authUser(req, res, next) {
         jwtSecret,
         {
           expiresIn: maxAge, // 3hrs in sec
-        }
+        },
       );
-      res
-        .status(201)
-        .json(
-          commonUtils.formatResponse("Login success!", 201, {
-            ...userInfo[0],
-            token: token,
-          })
-        );
+      res.status(201).json(
+        commonUtils.formatResponse("Login success!", 201, {
+          ...userInfo[0],
+          token: token,
+        }),
+      );
     } else {
       res
         .status(200)
@@ -49,106 +47,6 @@ async function authUser(req, res, next) {
   }
 }
 
-async function createUser(req, res, next) {
-  const { username, password, email, sex } = req?.body;
-  try {
-    if (!username || !password) {
-      res
-        .status(404)
-        .json(
-          commonUtils.formatResponse(
-            "Missing param username or password!",
-            404,
-            null
-          )
-        );
-    } else {
-      const isExistUser = await login.isExistUserName(username);
-      if (isExistUser) {
-        res
-          .status(401)
-          .json(
-            commonUtils.formatResponse("User name already exist!", 401, null)
-          );
-      } else {
-        login
-          .createUser(username, password, email, sex)
-          .then((data) => {
-            res
-              .status(201)
-              .json(
-                commonUtils.formatResponse("Create user success!", 201, data[0])
-              );
-          })
-          .catch(() => {
-            res
-              .status(404)
-              .json(
-                commonUtils.formatResponse("Create user failed!", 404, null)
-              );
-          });
-      }
-    }
-  } catch (err) {
-    console.error(`Error while auth`, err.message);
-    next(err);
-  }
-}
-
-async function updateUserInfo(req, res, next) {
-  const { username, password, email, sex } = req?.body;
-  try {
-    if (!username || !password) {
-      res
-        .status(404)
-        .json(
-          commonUtils.formatResponse(
-            "Missing param username or password!",
-            404,
-            null
-          )
-        );
-    } else {
-      const isExistUser = await login.isExistUserName(username);
-      if (isExistUser) {
-        login
-          .updateUserInfo(username, password, email, sex)
-          .then((data) => {
-            res
-              .status(201)
-              .json(
-                commonUtils.formatResponse(
-                  "Update user info success!",
-                  201,
-                  data
-                )
-              );
-          })
-          .catch(() => {
-            res
-              .status(404)
-              .json(
-                commonUtils.formatResponse(
-                  "Update user info failed!",
-                  404,
-                  null
-                )
-              );
-          });
-      } else {
-        res
-          .status(401)
-          .json(commonUtils.formatResponse("User name not found!", 401, null));
-      }
-    }
-  } catch (err) {
-    console.error(`Error while auth`, err.message);
-    next(err);
-  }
-}
-
 module.exports = {
   authUser,
-  createUser,
-  updateUserInfo,
 };

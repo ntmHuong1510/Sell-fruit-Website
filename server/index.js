@@ -6,6 +6,8 @@ const morgan = require("morgan");
 const app = express();
 const port = process.env.PORT || 3000;
 const login = require("./src/routes/login.route");
+const product = require("./src/routes/product.route");
+const user = require("./src/routes/user.route");
 const auth = require("./src/middlewares/auth.middleware");
 const cors = require("cors");
 
@@ -15,10 +17,12 @@ app.use(cookieParser());
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(morgan("tiny"));
 app.use("/auth", login);
+app.use("/user", auth, user);
+app.use("/product", product);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {

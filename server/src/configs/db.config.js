@@ -3,7 +3,7 @@ const db = {
   host: "localhost",
   user: "root",
   password: "",
-  database: "fruit_shop_db",
+  database: "fashionshop",
   port: 3306,
 };
 
