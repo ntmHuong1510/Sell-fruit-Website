@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 const login = require("./src/routes/login.route");
 const product = require("./src/routes/product.route");
 const user = require("./src/routes/user.route");
+const cart = require("./src/routes/cart.route");
 const auth = require("./src/middlewares/auth.middleware");
 const cors = require("cors");
 
@@ -23,6 +24,7 @@ app.use(morgan("tiny"));
 app.use("/auth", login);
 app.use("/user", auth, user);
 app.use("/product", product);
+app.use("/cart", auth, cart);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {
