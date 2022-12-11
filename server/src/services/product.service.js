@@ -44,6 +44,13 @@ async function getProductList(
   }
 }
 
+async function getProduct(product_id) {
+  const query = await db.query(
+    `SELECT * FROM product WHERE product_id = ${product_id}`,
+  );
+  return query;
+}
+
 async function searchProduct(
   limitRecord = 10,
   currentPage = 1,
@@ -87,4 +94,5 @@ async function searchProduct(
 module.exports = {
   getProductList,
   searchProduct,
+  getProduct,
 };

@@ -9,6 +9,7 @@ const login = require("./src/routes/login.route");
 const product = require("./src/routes/product.route");
 const user = require("./src/routes/user.route");
 const cart = require("./src/routes/cart.route");
+const order = require("./src/routes/order.route");
 const auth = require("./src/middlewares/auth.middleware");
 const cors = require("cors");
 
@@ -25,6 +26,7 @@ app.use("/auth", login);
 app.use("/user", auth, user);
 app.use("/product", product);
 app.use("/cart", auth, cart);
+app.use("/order", auth, order);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {

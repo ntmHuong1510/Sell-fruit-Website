@@ -32,9 +32,18 @@ async function deleteItemCart(userID, productID) {
   return data;
 }
 
+async function deleteAllItem(userID) {
+  const data = await db.query(
+    `DELETE FROM user_cart WHERE user_id = ${userID}`,
+  );
+
+  return data;
+}
+
 module.exports = {
   getCartInfo,
   addToCart,
   updateQuantity,
   deleteItemCart,
+  deleteAllItem,
 };

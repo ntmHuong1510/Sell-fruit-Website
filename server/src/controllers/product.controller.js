@@ -22,6 +22,29 @@ async function getProductList(req, res, next) {
   }
 }
 
+async function getProduct(req, res, next) {
+  const { product_id } = req?.query;
+  try {
+    if (product_id) {
+      const listProduct = await product.getProduct(product_id);
+      res.status(200).json(
+        commonUtils.formatResponse("Get success!", 200, {
+          ...listProduct[0],
+        }),
+      );
+    } else {
+      res
+        .status(200)
+        .json(
+          commonUtils.formatResponse("Missing param product_id", 404, null),
+        );
+    }
+  } catch (err) {
+    console.error(`Error while get`, err.message);
+    next(err);
+  }
+}
+
 async function searchProduct(req, res, next) {
   const { currentPage, limit, searchText, sortKey, sortType } = req?.query;
   try {
@@ -46,4 +69,5 @@ async function searchProduct(req, res, next) {
 module.exports = {
   getProductList,
   searchProduct,
+  getProduct,
 };
