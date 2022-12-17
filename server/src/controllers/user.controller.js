@@ -6,7 +6,7 @@ async function createUser(req, res, next) {
   try {
     if (!username || !password) {
       res
-        .status(404)
+        .status(200)
         .json(
           commonUtils.formatResponse(
             "Missing param username or password!",
@@ -18,9 +18,9 @@ async function createUser(req, res, next) {
       const isExistUser = await user.isExistUserName(username);
       if (isExistUser) {
         res
-          .status(401)
+          .status(200)
           .json(
-            commonUtils.formatResponse("User name already exist!", 401, null),
+            commonUtils.formatResponse("Tên đăng nhập đã tồn tại!", 401, null),
           );
       } else {
         user
@@ -30,7 +30,7 @@ async function createUser(req, res, next) {
               .status(201)
               .json(
                 commonUtils.formatResponse(
-                  "Create user success!",
+                  "Tạo tài khoản thành công",
                   201,
                   data[0],
                 ),
@@ -38,9 +38,9 @@ async function createUser(req, res, next) {
           })
           .catch(() => {
             res
-              .status(404)
+              .status(200)
               .json(
-                commonUtils.formatResponse("Create user failed!", 404, null),
+                commonUtils.formatResponse("Đăng nhập thất bại!", 404, null),
               );
           });
       }

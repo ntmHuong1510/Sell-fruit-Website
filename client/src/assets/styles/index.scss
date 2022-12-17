@@ -9,8 +9,27 @@ body {
   .fa-icon-custom {
     height: 25px;
   }
-  .error-message{
+  .error-message {
     color: rgb(175, 13, 45);
     font-weight: 400;
+    text-align: center;
+  }
+  .success-message {
+    color: #7ba121;
+    font-weight: 400;
+    text-align: center;
+  }
+  .link {
+    width: fit-content;
+    font-size: 18px;
+    color: black;
+    cursor: pointer;
+    transition: 0.4s;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: underline;
+      color: #addc3b;
+    }
   }
 }

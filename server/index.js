@@ -23,7 +23,7 @@ app.use(
 );
 app.use(morgan("tiny"));
 app.use("/auth", login);
-app.use("/user", auth, user);
+app.use("/user", user);
 app.use("/product", product);
 app.use("/cart", auth, cart);
 app.use("/order", auth, order);

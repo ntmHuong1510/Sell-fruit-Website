@@ -1,109 +1,104 @@
 <template>
   <div class="outside">
-    <div class="login-wrapper">
-      <h1>TẠO TÀI KHOẢN MỚI</h1>
+    <div v-if="!isVerifySuccess" class="login-wrapper">
+      <h1>Quên mật khẩu</h1>
       <div class="field">
         <p>Tên đăng nhập</p>
-        <input v-model="dataForm.username" autocomplete="off" maxlength="20" />
+        <input v-model="userInfo.username" />
       </div>
       <div class="field">
-        <p>Email</p>
-        <input v-model="dataForm.email" autocomplete="off" maxlength="50" />
-      </div>
-      <div class="field">
-        <p>Mật khẩu</p>
-        <input
-          v-model="dataForm.password"
-          :type="isShowPassword ? 'text' : 'password'"
-          autocomplete="off"
-          maxlength="20"
-        />
-        <button class="toggle-password" @click="handleTogglePass">
-          <FontAwesomeIcon :icon="'eye'" class="fa-icon-custom" />
-        </button>
-      </div>
-      <div class="field">
-        <p>Nhập lại mật khẩu</p>
-        <input
-          v-model="dataForm.rePassword"
-          :type="isShowRePassword ? 'text' : 'password'"
-          autocomplete="off"
-          maxlength="20"
-        />
-        <button class="toggle-password" @click="handleToggleRePass">
-          <FontAwesomeIcon :icon="'eye'" class="fa-icon-custom" />
-        </button>
+        <p>Email đăng ký</p>
+        <input v-model="userInfo.email" />
       </div>
       <p v-if="errorMessage" class="error-message">
         {{ errorMessage }}
       </p>
-      <p v-if="successMessage" class="success-message">
-        {{ successMessage }}
-      </p>
       <p class="link" @click="handleGotoSignIn">Trở về trang đăng nhập</p>
-      <button class="button-login" @click="handleCreate">Đăng ký</button>
+      <button class="button-login" @click="handleVerify">Xác thực</button>
+    </div>
+    <div v-else class="login-wrapper">
+      <h1>Thay đổi mật khẩu</h1>
+      <div class="field">
+        <p>Mật khẩu mới</p>
+        <input v-model="passwordData.password" type="password" />
+      </div>
+      <div class="field">
+        <p>Nhập lại mật khẩu</p>
+        <input v-model="passwordData.rePassword" type="password" />
+      </div>
+      <p v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </p>
+      <button class="button-login" @click="handleChangePassword">Đổi mật khẩu</button>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed, ref, watch } from 'vue';
+import { storeAuth } from '@/core/store/auth';
 import { useRouter } from 'vue-router';
-import { storeUser } from '@/core/store';
-import { ref } from 'vue';
 import { MESSAGE } from '@/core/constants/message';
 import { regexEmail } from '@/core/constants/regex';
 
 const router = useRouter();
-const store = storeUser();
-const dataForm = ref({
+const userInfo = ref({
   username: '',
   email: '',
+});
+const passwordData = ref({
   password: '',
   rePassword: '',
 });
-
-const isShowPassword = ref(false);
-const isShowRePassword = ref(false);
+const store = storeAuth();
 const errorMessage = ref('');
-const successMessage = ref('');
+const isVerifySuccess = ref(false);
 
-const handleTogglePass = () => {
-  isShowPassword.value = !isShowPassword.value;
-};
+const userInfoStore = computed(() => {
+  return store.getDataLogin;
+});
 
-const handleToggleRePass = () => {
-  isShowRePassword.value = !isShowRePassword.value;
-};
-
-const handleGotoSignIn = () => {
-  router.push('/login');
-};
-
-const handleCreate = async () => {
-  const { username, email, password, rePassword } = dataForm?.value;
-  if (username && email && password && rePassword) {
+const handleVerify = async () => {
+  const { username, email } = userInfo.value;
+  if (username && email) {
     if (!regexEmail.test(email)) {
       errorMessage.value = MESSAGE['EMAILFORMAT'];
       return;
     }
-    if (password !== rePassword) {
-      errorMessage.value = MESSAGE['REPASSNOTMATCH'];
+    await store.vefiryForgot(userInfo.value);
+    const { statusCode, message } = store.data;
+    if (statusCode != '201') {
+      errorMessage.value = message;
     } else {
-      await store.createUser({ username, email, password });
-      const { statusCode, message } = store.data;
-      if (statusCode == '401') {
-        errorMessage.value = message;
-      } else if (statusCode == '201') {
-        errorMessage.value = '';
-        successMessage.value = 'Tạo tài khoản thành công!';
-        setTimeout(() => {
-          router.push('/login');
-        }, 2000);
-      } else errorMessage.value = '';
+      errorMessage.value = '';
+      isVerifySuccess.value = true;
     }
   } else {
     errorMessage.value = MESSAGE['REQUIRE'];
   }
+};
+
+const handleChangePassword = async () => {
+  const { password, rePassword } = passwordData.value;
+  if (password && rePassword) {
+    if (password != rePassword) errorMessage.value = MESSAGE['REPASSNOTMATCH'];
+    else {
+      await store.changePassword({ ...userInfo.value, password });
+      const { statusCode, message } = store.data;
+      if (statusCode != '201') {
+        errorMessage.value = message;
+      } else {
+        errorMessage.value = '';
+        router.push('/login');
+      }
+    }
+  } else {
+    errorMessage.value = MESSAGE['REQUIRE'];
+  }
+};
+
+const handleGotoSignIn = () => {
+  router.push('/login');
 };
 </script>
 
@@ -112,7 +107,7 @@ h1 {
   text-align: center;
 }
 .outside {
-  background-image: url('@/assets/background.jpg');
+  background-image: url('@/assets/loginbg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
@@ -132,7 +127,9 @@ h1 {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 30px 50px;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
     .field {
       display: flex;
       padding: 10px 0;
