@@ -11,7 +11,7 @@
       <SubFooter />
       <div class="row">
         <div class="col-lg-6 col-md-6 col-12 copyright_left">
-          <p>© 2018 by<a href="#"> FAMI</a> | All rights reserved</p>
+          <p>© 2022 by<a href="#"> RICHARD'S CLOTHING LTD</a> | All rights reserved</p>
         </div>
         <div class="col-lg-6 col-md-6 col-12 payment_right">
           <a href="#"

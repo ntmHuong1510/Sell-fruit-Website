@@ -1,88 +1,83 @@
 <template>
-    <div class="container">
-        <div class="item">
-            <img src="https://demo.fieldthemes.com/ps-fami/store/modules/ftchtmlblock/images/img10.png">
-            <div class="text_content">
-                <h3>new collection</h3>
-                <h4>from 20$</h4>
-            </div>
-        </div>
-        <div class="item">
-            <img src="https://demo.fieldthemes.com/ps-fami/store/modules/ftchtmlblock/images/img7.png">
-            <div class="text_content">
-                <h3>New Collection 2018</h3>
-                <h4>organic Design</h4>
-            </div>
-        </div>
+  <div class="container">
+    <div class="item">
+      <img src="https://www.countryandtownhouse.com/wp-content/uploads/2016/12/private.white_.2.jpg" />
+      <div class="text_content">
+        <h3>Bộ sưu tập lịch lãm</h3>
+        <h4>Chỉ từ 599k</h4>
+      </div>
     </div>
-
+    <div class="item">
+      <img src="https://spy.com/wp-content/uploads/2020/10/yeahd-1.jpg" />
+      <div class="text_content">
+        <h3>BỘ SƯU TẬP 2022</h3>
+        <h4>Thiết kế tối giản</h4>
+      </div>
+    </div>
+  </div>
 </template>
-    
-<script setup>
 
+<script setup></script>
 
-</script>
-    
 <style scoped lang="scss">
 .container {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    margin: auto;
-    justify-content: center;
-    gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  gap: 20px;
 
-    .item {
-        width: 50%;
-        position: relative;
-        cursor: pointer;
+  .item {
+    overflow: hidden;
+    height: 300px;
+    width: 50%;
+    position: relative;
+    cursor: pointer;
 
-        img {
-            transition: all .4s ease-in-out;
-        }
-
-        &:hover {
-            img {
-                -webkit-transform: rotateY(-180deg);
-                opacity: .7;
-            }
-
-            .text_content {
-                right: 30px;
-                left: auto;
-                text-align: right;
-            }
-
-
-        }
-
-        .text_content {
-            position: absolute;
-            top: 90px;
-            left: 30px;
-            right: auto;
-            text-align: left;
-            transition: all .4s ease-in-out;
-
-            h3 {
-                font-size: 24px;
-                text-transform: uppercase;
-                color: #333;
-                margin-bottom: 8px;
-            }
-
-            h4 {
-                font-size: 18px;
-                text-transform: uppercase;
-                color: #666;
-                margin: 0;
-            }
-        }
-
-        img {
-            width: 100%;
-        }
+    img {
+      transition: all 0.4s ease-in-out;
     }
+
+    &:hover {
+      img {
+        -webkit-transform: rotateY(-180deg);
+        opacity: 0.7;
+      }
+
+      .text_content {
+        right: 30px;
+        left: auto;
+        text-align: right;
+      }
+    }
+
+    .text_content {
+      position: absolute;
+      top: 90px;
+      left: 30px;
+      right: auto;
+      text-align: left;
+      transition: all 0.4s ease-in-out;
+
+      h3 {
+        font-size: 24px;
+        text-transform: uppercase;
+        color: white;
+        margin-bottom: 8px;
+      }
+
+      h4 {
+        font-size: 18px;
+        text-transform: uppercase;
+        color: white;
+        margin: 0;
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>
-    

@@ -1,5 +1,6 @@
 <template>
   <div class="outside">
+    <button class="button-back" @click="handleHome">Trở về trang chủ</button>
     <div class="login-wrapper">
       <h1>Đăng nhập</h1>
       <div class="field">
@@ -65,6 +66,10 @@ const handleGotoSignUp = () => {
   router.push('/register');
 };
 
+const handleHome = () => {
+  router.push('/');
+};
+
 const handleGotoForgot = () => {
   router.push('/forgot-password');
 };
@@ -81,6 +86,25 @@ h1 {
   position: relative;
   width: 100vw;
   height: 100vh;
+
+  .button-back {
+    font-size: 25px;
+    border: none;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.4s;
+    display: block;
+    position: relative;
+    top: 10px;
+    left: 10px;
+
+    &:hover {
+      background-color: #addc3b;
+    }
+  }
 
   .login-wrapper {
     color: black;
@@ -135,6 +159,9 @@ h1 {
           color: #addc3b;
         }
       }
+    }
+    .btn-group {
+      display: flex;
     }
 
     .button-login {

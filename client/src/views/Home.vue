@@ -3,11 +3,9 @@
     <Carosel />
     <Feature />
     <div class="top-title">
-      <div class="sub_title">
-        Cras ornare tristique elit.
-      </div>
+      <div class="sub_title">Hot nhất trong năm 2022</div>
       <h4 class="title_block title_font">
-        <span class="title_text">Featured Products</span>
+        <span class="title_text">Sản phẩm đặc trưng</span>
       </h4>
       <div class="icon_title">
         <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
@@ -26,7 +24,7 @@
     <AboutUs />
     <div class="best-seller-product">
       <div class="best-seller">
-        <p class="title">BEST SELLERS</p>
+        <p class="title">BÁN CHẠY NHẤT</p>
         <div class="list">
           <SmallProduct />
           <SmallProduct />
@@ -34,10 +32,10 @@
         </div>
       </div>
       <div class="image-content">
-        <img src="https://demo.fieldthemes.com/ps-fami/store/modules/ftchtmlblock/images/img5.jpg">
+        <img src="https://c0.wallpaperflare.com/preview/606/698/321/man-wearing-jacket.jpg" />
       </div>
       <div class="best-seller">
-        <p class="title">TOP RATES</p>
+        <p class="title">ĐÁNH GIÁ CAO NHẤT</p>
         <div class="list">
           <SmallProduct />
           <SmallProduct />
@@ -50,19 +48,16 @@
 </template>
 
 <script setup>
-
-import Carosel from "@/components/Carosel.vue";
-import Feature from "@/components/Feature.vue";
-import Product from "@/components/Product.vue";
-import SmallProduct from "@/components/SmallProduct.vue";
-import MoreInfo from "@/components/MoreInfo.vue";
-import AboutUs from "@/components/AboutUs.vue";
-import Brand from "@/components/Brand.vue";
-import Footer from "@/components/Footer.vue";
-
-
+import Carosel from '@/components/Carosel.vue';
+import Feature from '@/components/Feature.vue';
+import Product from '@/components/Product.vue';
+import SmallProduct from '@/components/SmallProduct.vue';
+import MoreInfo from '@/components/MoreInfo.vue';
+import AboutUs from '@/components/AboutUs.vue';
+import Brand from '@/components/Brand.vue';
+import Footer from '@/components/Footer.vue';
 </script>
-  
+
 <style scoped lang="scss">
 .home {
   height: auto;
@@ -103,7 +98,7 @@ import Footer from "@/components/Footer.vue";
     min-width: 150px;
 
     &::before {
-      content: "";
+      content: '';
       width: 53px;
       height: 2px;
       top: 50%;
@@ -114,7 +109,7 @@ import Footer from "@/components/Footer.vue";
     }
 
     &::after {
-      content: "";
+      content: '';
       width: 53px;
       height: 2px;
       top: 50%;
@@ -140,14 +135,13 @@ import Footer from "@/components/Footer.vue";
   display: flex;
   justify-content: center;
   margin: 50px;
-  .image-content{
+  .image-content {
     margin: 0 20px;
   }
   .title {
     font-size: 24px;
     font-weight: 700;
     text-transform: uppercase;
-    line-height: 18px;
     padding-bottom: 47px;
     margin: 0;
     overflow: hidden;
@@ -155,7 +149,7 @@ import Footer from "@/components/Footer.vue";
     position: relative;
 
     &::after {
-      content: "";
+      content: '';
       width: 53px;
       height: 2px;
       top: 38px;
@@ -167,4 +161,3 @@ import Footer from "@/components/Footer.vue";
   }
 }
 </style>
-  
