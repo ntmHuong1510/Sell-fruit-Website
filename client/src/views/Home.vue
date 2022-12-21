@@ -12,23 +12,14 @@
       </div>
     </div>
     <div class="product-list">
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
+      <Product v-for="(ele, index) in listProductFeature" :key="index" :data="ele" />
     </div>
     <AboutUs />
     <div class="best-seller-product">
       <div class="best-seller">
         <p class="title">BÁN CHẠY NHẤT</p>
         <div class="list">
-          <SmallProduct />
-          <SmallProduct />
-          <SmallProduct />
+          <SmallProduct v-for="(ele, index) in listProductBest" :key="index" :data="ele" />
         </div>
       </div>
       <div class="image-content">
@@ -37,9 +28,7 @@
       <div class="best-seller">
         <p class="title">ĐÁNH GIÁ CAO NHẤT</p>
         <div class="list">
-          <SmallProduct />
-          <SmallProduct />
-          <SmallProduct />
+          <SmallProduct v-for="(ele, index) in listProductRate" :key="index" :data="ele" />
         </div>
       </div>
     </div>
@@ -56,6 +45,27 @@ import MoreInfo from '@/components/MoreInfo.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import Brand from '@/components/Brand.vue';
 import Footer from '@/components/Footer.vue';
+import { onMounted, ref } from 'vue';
+import { storeProduct } from '@/core/store';
+
+const store = storeProduct();
+const listProductFeature = ref([]);
+const listProductBest = ref([]);
+const listProductRate = ref([]);
+
+onMounted(async () => {
+  await store.getProductList({
+    currentPage: 15,
+    limit: 36,
+  });
+  const listProduct = store.data.dataArray;
+  listProduct.forEach((ele) => {
+    ele.image_url = JSON.parse(ele.image_url.replace(/'/g, '"'));
+  });
+  listProductFeature.value = listProduct.slice(0, 20);
+  listProductBest.value = listProduct.slice(20, 28);
+  listProductRate.value = listProduct.slice(28, 36);
+});
 </script>
 
 <style scoped lang="scss">

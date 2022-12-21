@@ -15,7 +15,8 @@ const callAPI = {
     return instance({
       method: method,
       url: url,
-      data: data,
+      data: method === 'post' ? data : null,
+      params: method === 'get' ? data : null,
     }).finally(() => {
       setTimeout(() => {
         store.setLoading(false);
