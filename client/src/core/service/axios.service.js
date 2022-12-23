@@ -20,7 +20,7 @@ const callAPI = {
     }).finally(() => {
       setTimeout(() => {
         store.setLoading(false);
-      }, 1000);
+      }, 600);
     });
   },
 };

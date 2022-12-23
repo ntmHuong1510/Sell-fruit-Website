@@ -17,6 +17,8 @@
     "core-js": "^3.8.3",
     "js-cookie": "^3.0.1",
     "pinia": "^2.0.23",
+    "primeicons": "^6.0.1",
+    "primevue": "^3",
     "vue": "^3.2.13",
     "vue-carousel": "^0.18.0",
     "vue-router": "^4.1.5",

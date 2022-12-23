@@ -36,4 +36,15 @@ body {
       color: #addc3b;
     }
   }
+  .p-paginator-pages {
+    .p-highlight {
+      background: #addc3b !important;
+      color: #000;
+    }
+    .p-link {
+      &:focus {
+        box-shadow: 0 0 0 0.2rem #92b147 !important;
+      }
+    }
+  }
 }

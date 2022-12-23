@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import About from '../../views/About';
+import Category from '../../views/Category';
 import ForgotPassword from '../../views/ForgotPassword';
 import Home from '../../views/Home';
 import Login from '../../views/Login';
@@ -36,6 +37,11 @@ const routes = [
     path: '/product',
     name: 'Product',
     component: Product,
+  },
+  {
+    path: '/category',
+    name: 'Category',
+    component: Category,
   },
 ];
 

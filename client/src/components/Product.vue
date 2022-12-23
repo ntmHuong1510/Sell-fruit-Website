@@ -2,7 +2,7 @@
   <div class="product">
     <div class="img-container" @mouseenter="setHover(true)" @mouseleave="setHover(false)">
       <img v-show="!isHover" :src="data?.image_url[0] ? data?.image_url[0] : require('@/assets/noimage.jpg')" />
-      <img v-show="isHover" :src="data?.image_url[1] ? data?.image_url[1] : require('@/assets/noimage.jpg')" />
+      <img v-show="isHover" :src="data?.image_url[1] ? data?.image_url[1] : data?.image_url[0]" />
       <div class="wishlist">
         <FontAwesomeIcon icon="heart" class="fa-icon-custom" />
       </div>
@@ -118,7 +118,7 @@ const setHover = (value) => {
     font-size: 18px;
     line-height: 1;
     margin-bottom: 10px;
-    height: 36px;
+    height: 38px;
     overflow: hidden;
     text-overflow: ellipsis;
   }

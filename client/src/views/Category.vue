@@ -1,11 +1,9 @@
 <template>
   <div class="home">
     <Carosel />
-    <Feature />
     <div class="top-title">
-      <div class="sub_title">Hot nhất trong năm 2022</div>
       <h4 class="title_block title_font">
-        <span class="title_text">Sản phẩm đặc trưng</span>
+        <span class="title_text">{{ CATE_NAME[cateId] }}</span>
       </h4>
       <div class="icon_title">
         <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
@@ -14,25 +12,17 @@
     <div class="product-list">
       <Product v-for="(ele, index) in listProductFeature" :key="index" :data="ele" />
     </div>
-    <AboutUs />
-    <div class="best-seller-product">
-      <div class="best-seller">
-        <p class="title">BÁN CHẠY NHẤT</p>
-        <div class="list">
-          <SmallProduct v-for="(ele, index) in listProductBest" :key="index" :data="ele" />
-        </div>
-      </div>
-      <div class="image-content">
-        <img src="https://c0.wallpaperflare.com/preview/606/698/321/man-wearing-jacket.jpg" />
-      </div>
-      <div class="best-seller">
-        <p class="title">ĐÁNH GIÁ CAO NHẤT</p>
-        <div class="list">
-          <SmallProduct v-for="(ele, index) in listProductRate" :key="index" :data="ele" />
-        </div>
-      </div>
+    <div class="paginator-wrapper">
+      <Paginator
+        v-if="totaRecord > 0"
+        :first="(currentPage - 1) * recordPerPage"
+        @page="onChangePage"
+        :rows="recordPerPage"
+        :totalRecords="totaRecord"
+      ></Paginator>
     </div>
-    <MoreInfo />
+
+    <AboutUs />
   </div>
 </template>
 
@@ -45,26 +35,50 @@ import MoreInfo from '@/components/MoreInfo.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import Brand from '@/components/Brand.vue';
 import Footer from '@/components/Footer.vue';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { storeProduct } from '@/core/store';
+import { CATE_NAME } from '@/core/constants/common';
+import Paginator from 'primevue/paginator';
 
 const store = storeProduct();
+const route = useRoute();
+const router = useRouter();
 const listProductFeature = ref([]);
-const listProductBest = ref([]);
-const listProductRate = ref([]);
+const cateId = computed(() => {
+  return route.query.id;
+});
+const recordPerPage = 20;
+const totaRecord = ref(0);
+const currentPage = computed(() => {
+  return route.query.page;
+});
+
+const onChangePage = async (event) => {
+  router.replace({
+    query: {
+      id: cateId.value,
+      page: event.page + 1,
+    },
+  });
+};
 
 onMounted(async () => {
+  if (!cateId.value || !currentPage.value) {
+    router.push('/');
+    return;
+  }
   await store.getProductList({
-    currentPage: 1,
-    limit: 36,
+    currentPage: currentPage.value,
+    limit: recordPerPage,
+    cateId: cateId.value,
   });
   const listProduct = store.data.dataArray;
+  totaRecord.value = store.data.totalRecord;
   listProduct.forEach((ele) => {
     ele.image_url = JSON.parse(ele.image_url.replace(/'/g, '"'));
   });
-  listProductFeature.value = listProduct.slice(0, 20);
-  listProductBest.value = listProduct.slice(20, 28);
-  listProductRate.value = listProduct.slice(28, 36);
+  listProductFeature.value = listProduct;
 });
 </script>
 
@@ -139,6 +153,14 @@ onMounted(async () => {
   flex-wrap: wrap;
   margin: auto;
   padding-left: 16px;
+  margin-bottom: 30px;
+}
+
+.paginator-wrapper {
+  margin: auto;
+  max-width: 1150px;
+  width: 100%;
+  text-align: right;
   margin-bottom: 30px;
 }
 

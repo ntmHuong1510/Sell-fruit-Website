@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="isLogin">
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </div>
     <div v-else>
       <HeaderVue />
-      <router-view />
+      <router-view :key="$route.fullPath" />
       <Brand />
       <Footer />
       <SubFooter />

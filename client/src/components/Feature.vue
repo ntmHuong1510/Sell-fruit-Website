@@ -31,7 +31,7 @@
             </div>
             <div class="content_text">
               <h4>HỖ TRỢ 24/7</h4>
-              <p>Tư vấn khách hàng để dễ dàng lựa chọn sản phẩm phù hợp/p></p>
+              <p>Tư vấn khách hàng để dễ dàng lựa chọn sản phẩm phù hợp</p>
             </div>
           </div>
         </div>

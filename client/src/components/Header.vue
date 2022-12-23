@@ -2,39 +2,73 @@
   <div class="main-header">
     <div class="header-container">
       <div id="_desktop_logo" class="hidden-md-down pull-left">
-        <FontAwesomeIcon icon="user" class="fa-icon-custom" />
-        <a class="logo">
+        <div class="menu-wrapper" @click="onOpen">
+          <FontAwesomeIcon icon="user" class="fa-icon-custom" />
+          <p>{{ isSignedd ? `Hello, ${userInfo?.user_name}` : 'Đăng nhập' }}</p>
+          <div v-show="isOpenMenu" class="menu">
+            <p class="item-menu">Thông tin cá nhân</p>
+            <p class="item-menu" @click="onLogout">Đăng xuất</p>
+          </div>
+        </div>
+        <a class="logo" @click="goToHome">
           <img class="logo img-responsive" src="@/assets/shop-logo.png" alt="Fami_Organic_Home2" />
         </a>
         <FontAwesomeIcon icon="cart-shopping" class="fa-icon-custom" />
       </div>
     </div>
     <div class="nav-bar">
-      <div>
+      <div @click="goToCate(1)">
         <span>ÁO NAM</span>
       </div>
-      <div>
+      <div @click="goToCate(2)">
         <span>QUẦN NAM</span>
       </div>
-      <div>
+      <div @click="goToCate(4)">
         <span>GIÀY DÉP</span>
       </div>
-      <div>
+      <div @click="goToCate(3)">
         <span>PHỤ KIỆN</span>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { isSigned, logout } from '@/core/helpers/commonFunction';
+import Cookies from 'js-cookie';
 
-export default {
-  name: 'HeaderShop',
-  components: { FontAwesomeIcon },
-  props: {
-    msg: String,
-  },
+const router = useRouter();
+const isOpenMenu = ref(false);
+const isSignedd = ref(isSigned());
+const userInfo = ref(Cookies.get('uinfo') && JSON.parse(Cookies.get('uinfo')));
+
+const onOpen = () => {
+  if (!isSignedd.value) goToLogin();
+  else isOpenMenu.value = !isOpenMenu.value;
+};
+
+const onClose = () => {
+  isOpenMenu.value = false;
+};
+
+const goToCate = (value) => {
+  router.push({ path: '/category', query: { id: value, page: 1 } });
+};
+
+const goToHome = () => {
+  router.push('/');
+};
+
+const goToLogin = () => {
+  router.push('/login');
+};
+
+const onLogout = () => {
+  isSignedd.value = isSigned();
+  logout();
 };
 </script>
 
@@ -57,7 +91,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 50px;
+  padding: 0px 50px;
 }
 
 .header-container {
@@ -71,6 +105,39 @@ export default {
   display: flex;
   align-items: center;
   height: 70px;
+  cursor: pointer;
+}
+
+.menu-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  cursor: pointer;
+  z-index: 100;
+  p {
+    font-size: 18px;
+    margin: 0;
+    font-weight: bold;
+  }
+  .menu {
+    width: 300px;
+    height: auto;
+    background: #addc3b;
+    position: absolute;
+    top: 100px;
+    border: 1px solid #bbb7b7;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    .item-menu {
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($color: white, $alpha: 0.6);
+      }
+    }
+  }
 }
 
 .nav-bar {

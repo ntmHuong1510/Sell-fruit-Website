@@ -11,7 +11,7 @@ export const storeCommon = defineStore({
 
   actions: {
     setLoading(payload) {
-      this.data = { isLoading: payload };
+      this.data = { ...this.data, isLoading: payload };
     },
   },
 });
