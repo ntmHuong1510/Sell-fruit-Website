@@ -1,6 +1,11 @@
 <template>
   <div class="product">
-    <div class="img-container" @mouseenter="setHover(true)" @mouseleave="setHover(false)">
+    <div
+      class="img-container"
+      @mouseenter="setHover(true)"
+      @mouseleave="setHover(false)"
+      @click="gotoProduct(data?.product_id)"
+    >
       <img v-show="!isHover" :src="data?.image_url[0] ? data?.image_url[0] : require('@/assets/noimage.jpg')" />
       <img v-show="isHover" :src="data?.image_url[1] ? data?.image_url[1] : data?.image_url[0]" />
       <div class="wishlist">
@@ -44,6 +49,9 @@
 <script setup>
 import { formatCurrency } from '@/core/helpers/commonFunction';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   data: Object,
@@ -53,6 +61,10 @@ const isHover = ref(false);
 
 const setHover = (value) => {
   isHover.value = value;
+};
+
+const gotoProduct = (value) => {
+  router.push({ path: '/product', query: { id: value } });
 };
 </script>
 

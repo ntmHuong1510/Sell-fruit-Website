@@ -54,6 +54,7 @@ const listProductBest = ref([]);
 const listProductRate = ref([]);
 
 onMounted(async () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   await store.getProductList({
     currentPage: 1,
     limit: 36,

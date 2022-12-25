@@ -22,5 +22,14 @@ export const storeProduct = defineStore({
         this.data = data;
       }
     },
+    async getProductByID(payload) {
+      const response = await productService.getProductByID(payload);
+      const { data, statusCode } = response?.data;
+      if (statusCode == '200') {
+        this.data = { ...response?.data, message: '' };
+      } else {
+        this.data = response?.data;
+      }
+    },
   },
 });

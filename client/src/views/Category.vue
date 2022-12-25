@@ -64,6 +64,7 @@ const onChangePage = async (event) => {
 };
 
 onMounted(async () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   if (!cateId.value || !currentPage.value) {
     router.push('/');
     return;
