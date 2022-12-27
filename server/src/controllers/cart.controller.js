@@ -21,6 +21,7 @@ async function getCartInfo(req, res, next) {
         product_id: ele?.product_id,
         quantity: ele?.amount,
         price: ele?.price,
+        name: ele?.name,
         thumnail: listImage[0] ? listImage[0] : null,
       }));
     }

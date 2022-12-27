@@ -3,8 +3,11 @@
     <div class="header-container">
       <div id="_desktop_logo" class="hidden-md-down pull-left">
         <div class="menu-wrapper" @click="onOpen">
+          <Button :label="isSignedd ? `Hello, ${userInfo?.user_name}` : 'Đăng nhập'" icon="pi pi-user" />
+
+          <!-- 
           <FontAwesomeIcon icon="user" class="fa-icon-custom" />
-          <p>{{ isSignedd ? `Hello, ${userInfo?.user_name}` : 'Đăng nhập' }}</p>
+          <p>{{ isSignedd ? `Hello, ${userInfo?.user_name}` : 'Đăng nhập' }}</p> -->
           <div v-show="isOpenMenu" class="menu">
             <p class="item-menu">Thông tin cá nhân</p>
             <p class="item-menu" @click="onLogout">Đăng xuất</p>
@@ -13,7 +16,16 @@
         <a class="logo" @click="goToHome">
           <img class="logo img-responsive" src="@/assets/shop-logo.png" alt="Fami_Organic_Home2" />
         </a>
-        <FontAwesomeIcon icon="cart-shopping" class="fa-icon-custom" />
+        <Button
+          type="button"
+          label="Giỏ hàng"
+          icon="pi pi-shopping-cart"
+          class="p-button-success"
+          badge="8"
+          badgeClass="p-badge-info"
+          @click="goToCart"
+        />
+        <!-- <FontAwesomeIcon icon="cart-shopping" class="fa-icon-custom" /> -->
       </div>
     </div>
     <div class="nav-bar">
@@ -38,6 +50,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { isSigned, logout } from '@/core/helpers/commonFunction';
+import Button from 'primevue/button';
 import Cookies from 'js-cookie';
 
 const router = useRouter();
@@ -64,6 +77,10 @@ const goToHome = () => {
 
 const goToLogin = () => {
   router.push('/login');
+};
+
+const goToCart = () => {
+  router.push('/cart');
 };
 
 const onLogout = () => {

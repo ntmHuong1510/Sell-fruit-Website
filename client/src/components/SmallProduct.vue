@@ -1,5 +1,5 @@
 <template>
-  <div class="product-small">
+  <div class="product-small" @click="gotoProduct(data?.product_id)">
     <img :src="data?.image_url[0] ? data?.image_url[0] : require('@/assets/noimage.jpg')" />
     <div class="product-info">
       <p>{{ data?.name }}</p>
@@ -37,9 +37,16 @@
 
 <script setup>
 import { formatCurrency } from '@/core/helpers/commonFunction';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const props = defineProps({
   data: Object,
 });
+
+const gotoProduct = (value) => {
+  router.push({ path: '/product', query: { id: value } });
+};
 </script>
 
 <style scoped lang="scss">
