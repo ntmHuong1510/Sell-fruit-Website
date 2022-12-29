@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import About from '../../views/About';
 import Cart from '../../views/Cart';
+import CartConfirm from '../../views/CartConfirm';
 import CartHistory from '../../views/CartHistory';
 import Category from '../../views/Category';
 import ForgotPassword from '../../views/ForgotPassword';
@@ -8,6 +9,7 @@ import Home from '../../views/Home';
 import Login from '../../views/Login';
 import Product from '../../views/Product';
 import Register from '../../views/Register';
+import { isSigned } from '../helpers/commonFunction';
 
 const routes = [
   {
@@ -54,6 +56,11 @@ const routes = [
         name: 'CartHistory',
         component: CartHistory,
       },
+      {
+        path: 'confirm',
+        name: 'CartConfirm',
+        component: CartConfirm,
+      },
     ],
   },
 ];
@@ -61,6 +68,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory('/'),
   routes,
+});
+
+router.beforeEach((to, from) => {
+  const { path } = to;
+  const requireLoginURL = ['/cart', '/cart/history', '/cart/confirm'];
+
+  if (requireLoginURL.includes(path) && !isSigned()) {
+    window.location.href = '/login';
+    return false;
+  } else return true;
 });
 
 export default router;

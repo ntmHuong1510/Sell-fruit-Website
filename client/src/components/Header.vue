@@ -142,7 +142,7 @@ const onLogout = () => {
     height: auto;
     background: #addc3b;
     position: absolute;
-    top: 100px;
+    top: 54px;
     border: 1px solid #bbb7b7;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;

@@ -9,9 +9,58 @@
         <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
       </div>
     </div>
+    <div class="history-wrapper">
+      <div class="item" @click="toggleDialog">
+        <p class="code">Mã đơn: ABG123WSQ</p>
+        <p class="date">Ngày đặt hàng: 22/03/2000</p>
+        <Button label="Đã giao" class="p-button-raised p-button-rounded status" />
+      </div>
+      <div class="item" @click="toggleDialog">
+        <p class="code">Mã đơn: ABG123WSQ</p>
+        <p class="date">Ngày đặt hàng: 22/03/2000</p>
+        <Button label="Đã giao" class="p-button-raised p-button-rounded status" />
+      </div>
+      <div class="item" @click="toggleDialog">
+        <p class="code">Mã đơn: ABG123WSQ</p>
+        <p class="date">Ngày đặt hàng: 22/03/2000</p>
+        <Button label="Đã giao" class="p-button-raised p-button-rounded status" />
+      </div>
+      <div class="item" @click="toggleDialog">
+        <p class="code">Mã đơn: ABG123WSQ</p>
+        <p class="date">Ngày đặt hàng: 22/03/2000</p>
+        <Button label="Đã giao" class="p-button-raised p-button-rounded status" />
+      </div>
+      <div class="item" @click="toggleDialog">
+        <p class="code">Mã đơn: ABG123WSQ</p>
+        <p class="date">Ngày đặt hàng: 22/03/2000</p>
+        <Button label="Đã giao" class="p-button-raised p-button-rounded status" />
+      </div>
+    </div>
+    <Dialog v-model:visible="display">
+      <template #header>
+        <h3>Header</h3>
+      </template>
+
+      Content
+
+      <template #footer>
+        <Button label="No" icon="pi pi-times" class="p-button-text" />
+        <Button label="Yes" icon="pi pi-check" autofocus />
+      </template>
+    </Dialog>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+import { ref } from 'vue';
+
+const display = ref(false);
+
+const toggleDialog = () => {
+  display.value = true;
+};
+</script>
 
 <style scoped lang="scss">
 .top-title {
@@ -68,6 +117,39 @@
       background: #addc3b;
       background-color: rgb(173, 220, 59);
       position: absolute;
+    }
+  }
+}
+.history-wrapper {
+  max-width: 1150px;
+  width: 100%;
+  margin: auto;
+  .item {
+    border: 1px solid gray;
+    padding: 10px 20px;
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 16px;
+    &:hover {
+      background: rgba($color: #333, $alpha: 0.2);
+    }
+    .code {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .date {
+      margin: 0;
+      font-size: 18px;
+      color: #463f3f;
+    }
+    .status {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }
