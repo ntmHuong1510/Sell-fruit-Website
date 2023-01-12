@@ -1,15 +1,23 @@
 <template>
   <div>
     <div class="home">
-      <div class="carosel" v-if="arrayImage.length > 0">
+      <div
+        v-if="arrayImage.length > 0"
+        class="carosel"
+      >
         <splide :options="options">
-          <splide-slide v-for="(ele, idx) in arrayImage" :key="idx">
-            <img :src="ele" />
+          <splide-slide
+            v-for="(ele, idx) in arrayImage"
+            :key="idx"
+          >
+            <img :src="ele">
           </splide-slide>
         </splide>
       </div>
       <div class="info">
-        <p class="name">{{ dataProduct?.name }}</p>
+        <p class="name">
+          {{ dataProduct?.name }}
+        </p>
         <div class="comments_note">
           <div class="star_content clearfix">
             <div class="star">
@@ -33,46 +41,60 @@
           {{ formatCurrency(dataProduct?.price) }}
           <span class="old-price">{{ formatCurrency(dataProduct?.price + 120000) }}</span>
         </p>
-        <div>
+        <!-- <div>
           <span class="label">Size:</span>
           <Dropdown
             class="select"
             :options="[
-              { name: 'S', code: 'NY' },
-              { name: 'M', code: 'RM' },
-              { name: 'L', code: 'LDN' },
-              { name: 'XL', code: 'IST' },
-              { name: '2XL', code: 'PRS' },
+              { name: 'S', code: 'S' },
+              { name: 'M', code: 'M' },
+              { name: 'L', code: 'L' },
+              { name: 'XL', code: 'XL' },
+              { name: '2XL', code: '2XL' },
             ]"
             optionLabel="name"
             placeholder="Vui lòng chọn size áo"
           />
-        </div>
+        </div> -->
         <div>
           <span class="label">Số lượng:</span>
           <InputNumber
+            v-model="numberProduct"
             class="input-number"
-            showButtons
-            buttonLayout="horizontal"
-            decrementButtonClass="p-button-danger"
-            incrementButtonClass="p-button-success"
-            incrementButtonIcon="pi pi-plus"
-            decrementButtonIcon="pi pi-minus"
-            currency="EUR"
+            show-buttons
+            button-layout="horizontal"
+            decrement-button-class="p-button-danger"
+            increment-button-class="p-button-success"
+            increment-button-icon="pi pi-plus"
+            decrement-button-icon="pi pi-minus"
+            min="1"
           />
         </div>
 
-        <Button class="button-add p-button-raised p-button-rounded p-button-success" label="Thêm vào giỏ hàng" />
-        <Button class="button-add p-button-raised p-button-rounded p-button-info" label="Mua ngay" />
+        <Button
+          class="button-add p-button-raised p-button-rounded p-button-success"
+          label="Thêm vào giỏ hàng"
+          @click="onAddItem"
+        />
+        <Button
+          class="button-add p-button-raised p-button-rounded p-button-info"
+          label="Mua ngay"
+          @click="buyImediate"
+        />
       </div>
     </div>
     <div class="top-title">
-      <div class="sub_title">Hot nhất trong năm 2022</div>
+      <div class="sub_title">
+        Hot nhất trong năm 2022
+      </div>
       <h4 class="title_block title_font">
         <span class="title_text">Sản phẩm tương tự</span>
       </h4>
       <div class="icon_title">
-        <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
+        <FontAwesomeIcon
+          icon="leaf"
+          class="fa-icon-custom"
+        />
       </div>
     </div>
     <div class="carosel-related">
@@ -84,7 +106,10 @@
           perMove: 1,
         }"
       >
-        <splide-slide v-for="(ele, idx) in listProductRelated" :key="idx">
+        <splide-slide
+          v-for="(ele, idx) in listProductRelated"
+          :key="idx"
+        >
           <SmallProduct :data="ele" />
         </splide-slide>
       </splide>
@@ -105,17 +130,35 @@ import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted, computed, ref } from 'vue';
 import { formatCurrency } from '@/core/helpers/commonFunction';
-import { storeProduct } from '@/core/store';
+import { storeProduct, storeCart } from '@/core/store';
 import SmallProduct from '@/components/SmallProduct.vue';
 
+const router = useRouter();
 const route = useRoute();
 const store = storeProduct();
+const cartStore = storeCart();
 const productId = computed(() => {
   return route.query.id;
 });
 const dataProduct = ref(null);
 const arrayImage = ref([]);
 const listProductRelated = ref([]);
+const numberProduct = ref(1);
+
+const onAddItem = async () => {
+  await cartStore.addToCart({
+    product_id: productId.value,
+    quantity: numberProduct.value,
+  });
+};
+
+const buyImediate = async () => {
+  await cartStore.addToCart({
+    product_id: productId.value,
+    quantity: numberProduct.value,
+  });
+  router.push('/cart');
+};
 
 onMounted(async () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -140,7 +183,6 @@ onMounted(async () => {
       ele.image_url = JSON.parse(ele.image_url.replace(/'/g, '"'));
     });
     listProductRelated.value = listProduct;
-    console.log(listProduct);
   }
 });
 

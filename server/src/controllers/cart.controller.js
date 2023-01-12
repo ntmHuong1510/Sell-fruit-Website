@@ -11,19 +11,21 @@ async function getCartInfo(req, res, next) {
     const result = {};
     if (listItem.length > 0) {
       let total = 0;
-      const listImage = JSON.parse(listItem[0]?.image_url.replace(/'/g, '"'));
       listItem.forEach((ele) => {
         total = total + Number(ele.amount) * Number(ele.price);
       });
       result.user_id = listItem[0]?.user_id;
       result.totalPrice = total;
-      result.orders = listItem.map((ele) => ({
-        product_id: ele?.product_id,
-        quantity: ele?.amount,
-        price: ele?.price,
-        name: ele?.name,
-        thumnail: listImage[0] ? listImage[0] : null,
-      }));
+      result.orders = listItem.map((ele) => {
+        const listImage = JSON.parse(ele?.image_url.replace(/'/g, '"'));
+        return {
+          product_id: ele?.product_id,
+          quantity: ele?.amount,
+          price: ele?.price,
+          name: ele?.name,
+          thumnail: listImage[0] ? listImage[0] : null,
+        };
+      });
     }
     res.status(200).json(
       commonUtils.formatResponse("Get success!", 200, {
@@ -41,11 +43,22 @@ async function addToCart(req, res, next) {
   const userData = jwt.decode(token);
   const { product_id, quantity } = req?.body;
   try {
-    if (!product_id) {
-      res.status(200).json(commonUtils.formatResponse("Missing params", 400));
-    } else {
-      await cart.addToCart(userData?.id, product_id, quantity);
+    const listItem = await cart.getCartInfo(userData?.id);
+    const itemExist = listItem.find((ele) => ele?.product_id == product_id);
+    if (itemExist) {
+      await cart.updateQuantity(
+        userData?.id,
+        product_id,
+        quantity + itemExist.amount,
+      );
       res.status(200).json(commonUtils.formatResponse("Add success!", 200));
+    } else {
+      if (!product_id) {
+        res.status(200).json(commonUtils.formatResponse("Missing params", 400));
+      } else {
+        await cart.addToCart(userData?.id, product_id, quantity);
+        res.status(200).json(commonUtils.formatResponse("Add success!", 200));
+      }
     }
   } catch (err) {
     console.error(`Error while get`, err.message);

@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="top-title">
-      <div class="sub_title"></div>
+      <div class="sub_title" />
       <h4 class="title_block title_font">
         <span class="title_text">Giỏ hàng của bạn</span>
       </h4>
       <div class="icon_title">
-        <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
+        <FontAwesomeIcon
+          icon="leaf"
+          class="fa-icon-custom"
+        />
       </div>
     </div>
     <div class="table-wrapper">
@@ -15,68 +18,111 @@
         class="p-button-outlined p-button-success history"
         @click="goto('cart/history')"
       />
-      <DataTable :value="product" editMode="row" dataKey="id" responsiveLayout="scroll">
-        <Column field="name" header="Tên sản phẩm"></Column>
+      <DataTable
+        :value="cartInfo.orders"
+        data-key="product_id"
+        edit-mode="cell"
+        class="editable-cells-table"
+        responsive-layout="scroll"
+        @cell-edit-complete="onCellEditComplete"
+      >
+        <Column
+          field="name"
+          header="Tên sản phẩm"
+        />
         <!-- <Column field="image" header="Hình ảnh"></Column> -->
         <Column header="Hình ảnh">
           <template #body="slotProps">
-            <img :src="slotProps.data.image" class="product-image" />
+            <img
+              :src="slotProps.data.thumnail"
+              class="product-image"
+            >
           </template>
         </Column>
         <!-- <Column field="quantity" header="Sô lượng"></Column> -->
-        <Column field="quantity" header="Sô lượng" style="width: 20%">
+        <Column
+          field="quantity"
+          header="Sô lượng"
+          style="width: 20%"
+        >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" />
+            <InputNumber
+              v-model="data[field]"
+              min="1"
+            />
           </template>
         </Column>
-        <Column field="price" header="Giá"></Column>
-        <Column :rowEditor="true" style="width: 10%; min-width: 8rem" bodyStyle="text-align:center"></Column>
-        <template #footer> Tổng cộng: 1500000 </template>
+        <Column
+          field="price"
+          header="Giá"
+        />
+        <Column
+          style="width: 10%; min-width: 8rem"
+          body-style="text-align:center"
+        >
+          <template #body="slotProps">
+            <Button
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger"
+              @click="confirmDeleteProduct(slotProps.data)"
+            />
+          </template>
+        </Column>
+        <template #footer>
+          Tổng cộng: {{ formatCurrency(cartInfo.totalPrice) }}
+        </template>
       </DataTable>
     </div>
     <div class="text-area">
-      <Textarea placeholder="Ghi chú cho đơn hàng" />
-      <Button label="Tiến hành đặt hàng" class="p-button-outlined p-button-success" />
+      <Textarea placeholder="Bạn vui lòng ghi chú các yêu cầu có thể là kích thước quần áo, giày dép,..." />
+      <Button
+        label="Tiến hành đặt hàng"
+        class="p-button-outlined p-button-success"
+      />
     </div>
   </div>
 </template>
 <script setup>
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
 import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { storeCart } from '@/core/store';
+import { formatCurrency } from '@/core/helpers/commonFunction';
 
 const router = useRouter();
+const cartStore = storeCart();
+const cartInfo = ref([]);
 
 const goto = (path) => {
   router.push(path);
 };
 
-const product = [
-  {
-    id: '1000',
-    name: 'Áo Polo Slimfit Masculine Phối Bo PO094 Màu Kem',
-    image: 'https://4menshop.com/images/thumbs/2022/11/-17480-slide-products-6368a880149bf.JPG',
-    quantity: 10,
-    price: 345000,
-  },
-  {
-    id: '1001',
-    name: 'Áo Polo Slimfit Masculine Phối Bo PO094 Màu Kem',
-    image: 'https://4menshop.com/images/thumbs/2022/11/-17480-slide-products-6368a880149bf.JPG',
-    quantity: 10,
-    price: 345000,
-  },
-  {
-    id: '1002',
-    name: 'Áo Polo Slimfit Masculine Phối Bo PO094 Màu Kem',
-    image: 'https://4menshop.com/images/thumbs/2022/11/-17480-slide-products-6368a880149bf.JPG',
-    quantity: 10,
-    price: 345000,
-  },
-];
+onMounted(async () => {
+  await cartStore.cartInfo();
+  const { data } = cartStore.data;
+  cartInfo.value = data;
+  cartInfo.value.orders = data?.orders?.map((ele) => {
+    return { ...ele, price: formatCurrency(ele.price * ele.quantity) };
+  });
+});
+
+const onCellEditComplete = async (event) => {
+  if (event.newValue === event.value) return;
+  await cartStore.updateQuantity({
+    product_id: event?.data.product_id,
+    quantity: event.newValue,
+  });
+  await cartStore.cartInfo();
+  const { data } = cartStore.data;
+  cartInfo.value = data;
+  cartInfo.value.orders = data?.orders?.map((ele) => {
+    return { ...ele, price: formatCurrency(ele.price * ele.quantity) };
+  });
+};
 </script>
 
 <style scoped lang="scss">
@@ -159,6 +205,13 @@ const product = [
     width: 100%;
     height: 200px;
     margin-top: 16px;
+  }
+}
+
+:deep(.p-editable-column) {
+  &:hover {
+    cursor: pointer;
+    background: rgb(193, 191, 191);
   }
 }
 </style>
