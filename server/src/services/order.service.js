@@ -2,11 +2,11 @@ const db = require("./db.service");
 
 async function createOrder(data) {
   const query = await db.query(
-    `INSERT INTO orders(user_id, order_items, phone, address, shipper, ship_price, date, status) VALUES ('${
+    `INSERT INTO orders(user_id, order_items, phone, address, shipper, ship_price, date, status, note, name) VALUES ('${
       data?.user_id
     }','${JSON.stringify(data?.order_items)}','${data?.phone}','${
       data?.address
-    }','${data?.shipper}','${data?.ship_price}','${data?.date}','0')`,
+    }','${data?.shipper}','${data?.ship_price}','${data?.date}','0','${data?.note}', '${data?.name}')`,
   );
 
   return query;
@@ -28,7 +28,7 @@ async function getOrderInfo(order_id) {
 
 async function getAllOrder(user_id) {
   const query = await db.query(
-    `SELECT * FROM orders WHERE user_id = ${user_id}`,
+    `SELECT * FROM orders WHERE user_id = ${user_id} ORDER BY orders.date DESC`,
   );
   return query;
 }

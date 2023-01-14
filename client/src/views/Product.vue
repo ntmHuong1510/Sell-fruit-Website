@@ -1,16 +1,10 @@
 <template>
   <div>
     <div class="home">
-      <div
-        v-if="arrayImage.length > 0"
-        class="carosel"
-      >
+      <div v-if="arrayImage.length > 0" class="carosel">
         <splide :options="options">
-          <splide-slide
-            v-for="(ele, idx) in arrayImage"
-            :key="idx"
-          >
-            <img :src="ele">
+          <splide-slide v-for="(ele, idx) in arrayImage" :key="idx">
+            <img :src="ele" />
           </splide-slide>
         </splide>
       </div>
@@ -84,17 +78,12 @@
       </div>
     </div>
     <div class="top-title">
-      <div class="sub_title">
-        Hot nhất trong năm 2022
-      </div>
+      <div class="sub_title">Hot nhất trong năm 2022</div>
       <h4 class="title_block title_font">
         <span class="title_text">Sản phẩm tương tự</span>
       </h4>
       <div class="icon_title">
-        <FontAwesomeIcon
-          icon="leaf"
-          class="fa-icon-custom"
-        />
+        <FontAwesomeIcon icon="leaf" class="fa-icon-custom" />
       </div>
     </div>
     <div class="carosel-related">
@@ -106,10 +95,7 @@
           perMove: 1,
         }"
       >
-        <splide-slide
-          v-for="(ele, idx) in listProductRelated"
-          :key="idx"
-        >
+        <splide-slide v-for="(ele, idx) in listProductRelated" :key="idx">
           <SmallProduct :data="ele" />
         </splide-slide>
       </splide>
@@ -128,7 +114,7 @@ import '@splidejs/splide/dist/css/themes/splide-sea-green.min.css';
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import { useRoute, useRouter } from 'vue-router';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, onBeforeMount } from 'vue';
 import { formatCurrency } from '@/core/helpers/commonFunction';
 import { storeProduct, storeCart } from '@/core/store';
 import SmallProduct from '@/components/SmallProduct.vue';
@@ -150,6 +136,7 @@ const onAddItem = async () => {
     product_id: productId.value,
     quantity: numberProduct.value,
   });
+  await cartStore.cartInfo();
 };
 
 const buyImediate = async () => {
@@ -160,8 +147,9 @@ const buyImediate = async () => {
   router.push('/cart');
 };
 
+onBeforeMount(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
 onMounted(async () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
   if (!productId.value) {
     router.push('/');
     return;

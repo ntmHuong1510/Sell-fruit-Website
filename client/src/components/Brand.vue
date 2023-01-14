@@ -1,5 +1,4 @@
 <template>
-  \
   <div class="container">
     <div class="owl-stage-outer">
       <div
@@ -168,6 +167,7 @@
     width: 100%;
     border-top: 1px solid #bbb7b7;
     padding: 50px 0;
+    margin-top: 30px;
 
     .owl-stage-outer {
         width: fit-content;

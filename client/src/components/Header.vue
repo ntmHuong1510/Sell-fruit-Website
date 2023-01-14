@@ -21,7 +21,7 @@
           label="Giỏ hàng"
           icon="pi pi-shopping-cart"
           class="p-button-success"
-          badge="8"
+          :badge="numberItem"
           badgeClass="p-badge-info"
           @click="goToCart"
         />
@@ -48,15 +48,22 @@
 <script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { isSigned, logout } from '@/core/helpers/commonFunction';
 import Button from 'primevue/button';
 import Cookies from 'js-cookie';
+import { storeCart } from '@/core/store';
 
+const cartStore = storeCart();
 const router = useRouter();
 const isOpenMenu = ref(false);
 const isSignedd = ref(isSigned());
 const userInfo = ref(Cookies.get('uinfo') && JSON.parse(Cookies.get('uinfo')));
+
+const numberItem = computed(() => {
+  const { data } = cartStore.data;
+  return data ? data?.orders?.length : 0;
+});
 
 const onOpen = () => {
   if (!isSignedd.value) goToLogin();

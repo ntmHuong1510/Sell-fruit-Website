@@ -35,7 +35,7 @@ import MoreInfo from '@/components/MoreInfo.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import Brand from '@/components/Brand.vue';
 import Footer from '@/components/Footer.vue';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeProduct } from '@/core/store';
 import { CATE_NAME } from '@/core/constants/common';
@@ -63,8 +63,9 @@ const onChangePage = async (event) => {
   });
 };
 
+onBeforeMount(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
 onMounted(async () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
   if (!cateId.value || !currentPage.value) {
     router.push('/');
     return;

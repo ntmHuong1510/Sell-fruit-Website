@@ -7,24 +7,27 @@ const { extractToken } = require("../utils/common.util");
 async function createOrder(req, res, next) {
   const token = extractToken(req);
   const userData = jwt.decode(token);
-  const { phone, address, shipper, ship_price, date } = req?.body;
+  const { phone, address, shipper, ship_price, date, note, name } = req?.body;
 
   try {
     const listItem = await cart.getCartInfo(userData?.id);
     const result = {};
     if (listItem.length > 0) {
       let total = 0;
-      const listImage = JSON.parse(listItem[0]?.image_url.replace(/'/g, '"'));
       listItem.forEach((ele) => {
         total = total + Number(ele.amount) * Number(ele.price);
       });
       result.totalPrice = total;
-      result.orders = listItem.map((ele) => ({
-        product_id: ele?.product_id,
-        quantity: ele?.amount,
-        price: ele?.price,
-        thumnail: listImage[0] ? listImage[0] : null,
-      }));
+      result.orders = listItem.map((ele) => {
+        const listImage = JSON.parse(ele?.image_url.replace(/'/g, '"'));
+        return {
+          product_id: ele?.product_id,
+          quantity: ele?.amount,
+          price: ele?.price,
+          name: ele?.name,
+          thumnail: listImage[0] ? listImage[0] : null,
+        };
+      });
     } else {
       res
         .status(200)
@@ -39,6 +42,8 @@ async function createOrder(req, res, next) {
         shipper,
         ship_price,
         date,
+        note,
+        name,
       });
       await cart.deleteAllItem(userData?.id);
       res.status(200).json(commonUtils.formatResponse("Create success!", 200));
@@ -94,6 +99,7 @@ async function getOrders(req, res, next) {
 
   try {
     const data = await order.getAllOrder(userData?.id);
+    console.log(data);
     res.status(200).json(
       commonUtils.formatResponse(
         "Get success",

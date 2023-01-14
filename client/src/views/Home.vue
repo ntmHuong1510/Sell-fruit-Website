@@ -45,7 +45,7 @@ import MoreInfo from '@/components/MoreInfo.vue';
 import AboutUs from '@/components/AboutUs.vue';
 import Brand from '@/components/Brand.vue';
 import Footer from '@/components/Footer.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onBeforeMount } from 'vue';
 import { storeProduct } from '@/core/store';
 
 const store = storeProduct();
@@ -53,8 +53,9 @@ const listProductFeature = ref([]);
 const listProductBest = ref([]);
 const listProductRate = ref([]);
 
+onBeforeMount(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
 onMounted(async () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
   await store.getProductList({
     currentPage: 1,
     limit: 36,

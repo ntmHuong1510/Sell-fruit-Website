@@ -9,7 +9,12 @@ const verifyToken = (req, res, next) => {
   if (token) {
     jwt.verify(token, jwtSecret, (err) => {
       if (err) {
-        return res.status(401).json({ message: "Not authorized" });
+        return res.json(
+          commonUtils.formatResponse(
+            "Not authorized, token not available",
+            401,
+          ),
+        );
       } else {
         next();
       }
