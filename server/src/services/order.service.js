@@ -28,7 +28,14 @@ async function getOrderInfo(order_id) {
 
 async function getAllOrder(user_id) {
   const query = await db.query(
-    `SELECT * FROM orders WHERE user_id = ${user_id} ORDER BY orders.date DESC`,
+    `SELECT * FROM orders WHERE user_id = ${user_id} ORDER BY orders.order_id DESC`,
+  );
+  return query;
+}
+
+async function getAllOrderAdmin() {
+  const query = await db.query(
+    `SELECT * FROM orders ORDER BY orders.order_id DESC`,
   );
   return query;
 }
@@ -46,4 +53,5 @@ module.exports = {
   getOrderInfo,
   getAllOrder,
   updateStatusOrder,
+  getAllOrderAdmin
 };

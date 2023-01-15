@@ -47,7 +47,16 @@ const isLoading = computed(() => {
 });
 
 const isLogin = computed(() => {
-  const hideHeaderPath = ['/login', '/register', '/forgot-password'];
+  const hideHeaderPath = [
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/admin',
+    '/admin/orders',
+    '/admin/products',
+    '/admin/order-details',
+    '/admin/dashboard'
+  ];
   return hideHeaderPath.includes(route?.path);
 });
 </script>

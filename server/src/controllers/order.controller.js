@@ -99,7 +99,27 @@ async function getOrders(req, res, next) {
 
   try {
     const data = await order.getAllOrder(userData?.id);
-    console.log(data);
+    res.status(200).json(
+      commonUtils.formatResponse(
+        "Get success",
+        200,
+        data.map((ele) => ({
+          ...ele,
+          order_items: JSON.parse(ele?.order_items?.replace(/'/g, '"')),
+        })),
+      ),
+    );
+  } catch (err) {
+    console.error(`Error while get`, err.message);
+    next(err);
+  }
+}
+
+async function getOrdersAdmin(req, res, next) {
+  const token = extractToken(req);
+
+  try {
+    const data = await order.getAllOrderAdmin();
     res.status(200).json(
       commonUtils.formatResponse(
         "Get success",
@@ -169,4 +189,5 @@ module.exports = {
   getOrders,
   getOrderById,
   updateStatusOrder,
+  getOrdersAdmin
 };
